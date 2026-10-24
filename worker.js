@@ -13,32 +13,45 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === "/api/status") {
-      return Response.json({ status: "connected" }, { headers: cors });
+      return Response.json({ status: "VIDOX AI Backend LIVE" }, { headers: cors });
     }
 
     if (url.pathname === "/api/video" && request.method === "POST") {
       if (!env.JSON2VIDEO_API_KEY) {
         return Response.json({ error: "API key missing" }, { status: 500, headers: cors });
       }
+      try {
+        const input = await request.json();
+        const prompt = input.prompt || "A cinematic video";
+        
+        const moviePayload = {
+          resolution: "hd",
+          quality: "high",
+          draft: false,
+          scenes: [{ elements: [{ type: "voice", text: prompt, voice: "en-US-JennyNeural" }, { type: "text", text: prompt, style: "001" }] }]
+        };
 
-      const input = await request.json();
+        const result = await fetch("https://api.json2video.com/v2/movies", {
+          method: "POST",
+          headers: { "x-api-key": env.JSON2VIDEO_API_KEY, "Content-Type": "application/json" },
+          body: JSON.stringify(moviePayload)
+        });
 
-      const result = await fetch("https://api.json2video.com/v2/movies", {
-        method: "POST",
-        headers: {
-          "x-api-key": env.JSON2VIDEO_API_KEY,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(input)
+        const data = await result.json();
+        return Response.json({ success: true, projectId: data.project || data.id, raw: data }, { headers: cors });
+      } catch (err) {
+        return Response.json({ error: err.message }, { status: 500, headers: cors });
+      }
+    }
+
+    if (url.pathname.startsWith("/api/movie/")) {
+      const projectId = url.pathname.split("/").pop();
+      const result = await fetch(`https://api.json2video.com/v2/movies/${projectId}`, {
+        headers: { "x-api-key": env.JSON2VIDEO_API_KEY }
       });
-
-      return new Response(await result.text(), {
-        status: result.status,
-        headers: { ...cors, "Content-Type": "application/json" }
-      });
+      return new Response(await result.text(), { headers: { ...cors, "Content-Type": "application/json" } });
     }
 
     return Response.json({ error: "Not found" }, { status: 404, headers: cors });
   }
 };
- 
