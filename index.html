@@ -1,150 +1,82 @@
-<!doctype html>
-<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>VIDOX AI — AI Video Creation Studio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vidox AI - All AI Tools</title>
+<link rel="manifest" href="manifest.json">
 <style>
-:root{--bg:#070a18;--panel:#0d1430;--line:#263765;--text:#f5f7ff;--muted:#a9b5d5;--radius:18px}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#1a1450 0,transparent 36%),radial-gradient(ellipse at 90% 15%,#092b55 0,transparent 32%),var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,sans-serif}
-.app{min-height:100vh;display:grid;grid-template-columns:250px 1fr}
-.sidebar{position:sticky;top:0;height:100vh;overflow:auto;padding:22px 15px;background:#080d20ed;border-right:1px solid var(--line);z-index:5}
-.brand{display:flex;align-items:center;gap:11px;padding:4px 7px 22px}.brand-icon{width:43px;height:43px;border-radius:14px;background:linear-gradient(140deg,#04d5ff,#853bff 60%,#ef39d4);display:grid;place-items:center;font-weight:900;font-size:25px}
-.brand-name{font-size:22px;font-weight:900}.brand-name span{color:#a35bff}.tag{color:var(--muted);font-size:11px;letter-spacing:2px}
-.nav-label{color:#7888b2;font-size:10px;font-weight:800;letter-spacing:1.5px;padding:15px 10px 8px}.nav{display:grid;gap:5px}
-.nav button{border:0;background:transparent;color:#c4cee9;text-align:left;padding:11px 12px;border-radius:12px;display:flex;gap:12px;align-items:center;cursor:pointer}
-.nav button:hover,.nav button.active{background:linear-gradient(100deg,#7929ec,#2458dc);color:white}
-.ico{width:22px;text-align:center;font-size:18px}
-.side-bottom{margin-top:24px;border:1px solid var(--line);padding:13px;border-radius:15px;color:var(--muted);font-size:12px}
-.main{min-width:0;padding:22px clamp(14px,3vw,38px) 45px;max-width:1600px;width:100%;margin:auto}
-.topbar{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:24px}
-.search{flex:1;max-width:550px;position:relative}.search input{width:100%;padding:12px 15px 12px 42px;color:var(--text);background:#080f25;border:1px solid #2c416f;border-radius:11px}
-.search:before{content:"⌕";position:absolute;left:15px;top:5px;font-size:25px;color:var(--muted)}
-.top-actions{display:flex;align-items:center;gap:10px}.credit{padding:9px 13px;border:1px solid var(--line);border-radius:30px;color:#ffd56b;background:#101a35;font-size:12px}
-.avatar{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ffb84b,#ed39d4);font-weight:900}
-.hero{border:1px solid #6035d9;border-radius:22px;overflow:hidden;background:linear-gradient(105deg,#101743,#111b39 48%,#22204b);padding:clamp(22px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:20px}
-.hero-content{max-width:650px}.eyebrow{color:#aebeff;font-size:12px;letter-spacing:2px;font-weight:800}
-.hero h1{font-size:clamp(29px,5vw,48px);line-height:1.08;margin:8px 0}.gradient{background:linear-gradient(90deg,#fff,#7ddcff,#c18aff);background-clip:text;color:transparent}
-.hero p{color:#bdc9e8;margin:10px 0 20px}.hero-art{font-size:clamp(65px,10vw,120px)}
-.btn{border:0;border-radius:12px;padding:11px 17px;color:white;background:linear-gradient(100deg,#9b24ed,#176fe8);font-weight:800;cursor:pointer}
-.btn:hover{filter:brightness(1.13)}.btn.secondary{background:#18254b;border:1px solid #354a7e}.btn.ghost{background:transparent;border:1px solid var(--line)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}.stat,.card,.panel{background:linear-gradient(145deg,#101a38,#0b1229);border:1px solid var(--line);border-radius:var(--radius);padding:17px}
-.tool-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.tool-card{display:flex;align-items:center;gap:13px;min-height:100px;text-align:left;color:var(--text);background:linear-gradient(145deg,#101b3c,#0b1228);border:1px solid #2b467f;border-radius:16px;padding:15px;cursor:pointer;transition:.2s}
-.tool-card:hover{border-color:#a45aff;transform:translateY(-2px)}.tool-icon{width:49px;height:49px;flex:none;border-radius:14px;display:grid;place-items:center;font-size:24px;background:linear-gradient(140deg,#7735f7,#087de9)}
-.page{display:none}.page.active{display:block}.page-title{margin:5px 0 4px;font-size:27px}.muted{color:var(--muted)}
-.form-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:15px}.field{margin:14px 0}.field label{display:block;font-size:13px;font-weight:750;margin-bottom:7px;color:#dbe4ff}
-.field input,.field textarea,.field select{color:var(--text);background:#080f25;border:1px solid #2c416f;border-radius:11px;padding:12px;width:100%;outline:none}
-.field textarea{min-height:135px;resize:vertical}.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hint{font-size:11px;color:#91a0c5;margin-top:6px}
-.preview{min-height:200px;border:1px dashed #465d91;border-radius:15px;background:#080f25;display:grid;place-items:center;text-align:center;padding:15px;color:var(--muted);overflow:hidden}
-.preview img,.preview video{max-width:100%;max-height:400px;border-radius:12px}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}
-.result{margin-top:16px;padding:14px;border:1px solid #2e4778;background:#0a142c;border-radius:14px;white-space:pre-wrap;word-break:break-word}
-.hidden{display:none!important}.notice{padding:12px 14px;border-radius:12px;font-size:12px;margin:12px 0}.success{border:1px solid #176b62;background:#0b2929;color:#a7f5e4}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#17254a;border:1px solid #526ba5;padding:11px 17px;border-radius:12px;z-index:20}
-.footer{text-align:center;color:#7787ad;font-size:11px;margin-top:35px}.mobile-menu{display:none}
-@media(max-width:720px){.app{display:block}.sidebar{position:fixed;left:-270px;top:0;width:250px;transition:left .22s;box-shadow:20px 0 45px #0008}.sidebar.open{left:0}.mobile-menu{display:inline-grid;place-items:center;width:42px;height:42px;border:1px solid var(--line);border-radius:12px;background:#111a36;color:white;font-size:20px}.main{padding:14px 13px 35px}.tool-grid{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.hero-art{display:none}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:white;font-family:system-ui, sans-serif;padding:15px;padding-bottom:90px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
+.logo{font-size:24px;font-weight:900}
+.logo b{color:#4a8cff}
+.upgrade{background:linear-gradient(90deg,#9b24ed,#ff8a00);padding:8px 16px;border-radius:20px;font-weight:700;font-size:14px}
+h2{font-size:18px;letter-spacing:1px;margin:25px 0 15px 5px;color:#aaa}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.card{text-align:center}
+.card-img{width:100%;aspect-ratio:1/1;border-radius:20px;overflow:hidden;background:#1a1a1a;border:1px solid #222}
+.card-img img{width:100%;height:100%;object-fit:cover}
+.card p{margin-top:8px;font-size:13px;font-weight:600}
+.circle-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.circle-card{text-align:center;position:relative}
+.circle{width:100%;aspect-ratio:1/1;border-radius:50%;background:#1e1e1e;border:1px solid #333;display:flex;align-items:center;justify-content:center;font-size:32px}
+.badge{position:absolute;top:-5px;right:10px;background:white;color:black;font-size:10px;font-weight:900;padding:3px 8px;border-radius:20px}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#1c1c1f;border-top-left-radius:20px;border-top-right-radius:20px;display:flex;justify-content:space-around;padding:12px 0}
+.nav-item{text-align:center;font-size:11px;color:#777}
+.nav-item.active{color:white}
 </style>
 </head>
 <body>
-<div class="app">
-<aside class="sidebar" id="sidebar">
-<div class="brand"><div class="brand-icon">V</div><div><div class="brand-name">VIDOX <span>AI</span></div><div class="tag">CREATE. IMAGINE. GENERATE.</div></div></div>
-<div class="nav-label">WORKSPACE</div>
-<nav class="nav" id="nav">
-<button class="active" data-page="home"><span class="ico">⌂</span>Home</button>
-<button data-page="video"><span class="ico">🎬</span>Text to Video</button>
-<button data-page="imagevideo"><span class="ico">🖼️</span>Image to Video</button>
-<button data-page="scriptvideo"><span class="ico">📝</span>Script to Video</button>
-<button data-page="image"><span class="ico">🎨</span>AI Image Generator</button>
-<button data-page="voice"><span class="ico">🎙️</span>AI Voice Generator</button>
-<button data-page="story"><span class="ico">📖</span>AI Story Maker</button>
-<button data-page="youtube"><span class="ico">▶️</span>YouTube Creator Tools</button>
-<button data-page="editor"><span class="ico">✂️</span>Video Editing Tools</button>
-<button data-page="library"><span class="ico">📁</span>My Videos</button>
-<button data-page="settings"><span class="ico">⚙️</span>Settings / API</button>
-</nav>
-<div class="side-bottom">✨ Vidox AI Live<br><span class="muted">Backend connected. Real video generation ready.</span></div>
-</aside>
-<main class="main">
-<header class="topbar">
-<button class="mobile-menu" id="menuBtn">☰</button>
-<div class="search"><input id="globalSearch" placeholder="Search tools..."></div>
-<div class="top-actions"><span class="credit">✦ Live: <b id="credits">Vidox AI</b></span><div class="avatar">V</div></div>
-</header>
-
-<section class="page active" id="page-home">
-<div class="hero"><div class="hero-content"><div class="eyebrow">YOUR AI CREATION COMMAND CENTER</div><h1>Turn Your Ideas Into <span class="gradient">Amazing Videos</span></h1><p>Create video prompts, stories, images, voiceovers and YouTube content in one place.</p><button class="btn" data-go="video">Start Creating →</button></div><div class="hero-art">👑▶️</div></div>
-<div class="stats"><div class="stat"><small>Saved creations</small><strong id="statSaved">0</strong></div><div class="stat"><small>Tools available</small><strong>9</strong></div><div class="stat"><small>Generation mode</small><strong style="font-size:17px">LIVE API ✓</strong></div></div>
-<div style="margin:28px 0 14px"><h2 style="margin:0">AI Video & Content Creation Tools</h2><p class="muted">Choose a tool to get started</p></div>
-<div class="tool-grid">
-<button class="tool-card" data-go="video"><span class="tool-icon">🎬</span><span><b>Text to Video</b><small>Turn your idea into a video</small></span></button>
-<button class="tool-card" data-go="imagevideo"><span class="tool-icon">🖼️</span><span><b>Image to Video</b><small>Animate an uploaded image</small></span></button>
-<button class="tool-card" data-go="scriptvideo"><span class="tool-icon">📝</span><span><b>Script to Video</b><small>Prepare scene-by-scene prompts</small></span></button>
-<button class="tool-card" data-go="image"><span class="tool-icon">🎨</span><span><b>AI Image Generator</b><small>Create an image prompt</small></span></button>
-<button class="tool-card" data-go="voice"><span class="tool-icon">🎙️</span><span><b>AI Voice Generator</b><small>Listen with browser voices</small></span></button>
-<button class="tool-card" data-go="story"><span class="tool-icon">📖</span><span><b>AI Story Maker</b><small>Build a story outline</small></span></button>
-<button class="tool-card" data-go="youtube"><span class="tool-icon">▶️</span><span><b>YouTube Creator Tools</b><small>Titles, descriptions and tags</small></span></button>
-<button class="tool-card" data-go="editor"><span class="tool-icon">✂️</span><span><b>Video Editing Tools</b><small>Preview your video locally</small></span></button>
-<button class="tool-card" data-go="library"><span class="tool-icon">📁</span><span><b>My Videos</b><small>Find saved prompts</small></span></button>
+<div class="top">
+  <div class="logo">vidox<span style="color:#4a8cff">ai</span></div>
+  <div style="display:flex;gap:12px;align-items:center">
+    <div>⚡0</div>
+    <div class="upgrade">Upgrade</div>
+    <div>👤</div>
+  </div>
 </div>
-</section>
 
-<section class="page" id="page-video">
-<h1 class="page-title">🎬 Text to Video</h1><p class="muted">Describe the video you want to create.</p>
-<div class="notice success">✅ LIVE MODE: Backend connected. Real video generation is active.</div>
-<div class="form-grid"><div class="panel">
-<div class="field"><label>Video prompt</label><textarea id="videoPrompt" placeholder="A cinematic sunrise over a peaceful Pakistani village..."></textarea></div>
-<div class="row2"><div class="field"><label>Duration</label><select id="videoDuration"><option>5 seconds</option><option selected>10 seconds</option><option>15 seconds</option><option>30 seconds</option></select></div><div class="field"><label>Aspect ratio</label><select id="videoRatio"><option>16:9 YouTube</option><option>9:16 Shorts / Reels</option><option>1:1 Square</option></select></div></div>
-<div class="actions"><button class="btn" id="generateVideo">Generate Video</button><button class="btn secondary" id="saveVideoPrompt">Save Prompt</button><button class="btn ghost" id="clearVideo">Clear</button></div>
-<div id="videoResult" class="result hidden"></div>
-</div><div class="panel"><h3>Video preview</h3><div class="preview" id="videoPreview">🎥<br>Your generated video will appear here.<br><small>Click Generate to start</small></div><p class="hint" id="videoHint">Video takes 1-3 minutes. It will auto-play here.</p></div></div>
-</section>
+<h2>AI TOOLS</h2>
+<div class="grid">
+  <div class="card" onclick="openTool('animation')">
+    <div class="card-img"><img src="https://i.imgur.com/8Km9tLL.png"></div>
+    <p>Animation Studio</p>
+  </div>
+  <div class="card" onclick="openTool('cinema')">
+    <div class="card-img"><img src="https://i.imgur.com/QvUX9kR.png"></div>
+    <p>Cinema Studio</p>
+  </div>
+  <div class="card" onclick="openTool('ad')">
+    <div class="card-img"><img src="https://i.imgur.com/2nCt3Sbl.png"></div>
+    <p>Ad Studio</p>
+  </div>
+  <div class="card" onclick="openTool('whiteboard')">
+    <div class="card-img"><img src="https://i.imgur.com/m5a3p8s.png"></div>
+    <p>Whiteboard AI</p>
+  </div>
+</div>
 
-<section class="page" id="page-imagevideo"><h1 class="page-title">🖼️ Image to Video</h1><div class="panel"><div class="field"><label>Choose image</label><input type="file" id="sourceImage" accept="image/*"></div><div class="field"><label>Motion prompt</label><textarea id="imageMotion" placeholder="Camera slowly moves forward..."></textarea></div><div class="actions"><button class="btn" id="generateImageVideo">Animate Image</button></div><div id="ivResult" class="result hidden"></div></div><div class="panel"><h3>Image preview</h3><div class="preview" id="imagePreview">🖼️<br>Your selected image appears here.</div></div></section>
+<h2>MORE CREATOR TOOLS</h2>
+<div class="circle-grid">
+  <div class="circle-card" onclick="openTool('seo')"><span class="badge">NEW</span><div class="circle">🔍</div><p>Video SEO Writer</p></div>
+  <div class="circle-card" onclick="openTool('story')"><span class="badge">NEW</span><div class="circle">📝</div><p>AI Story Writer</p></div>
+  <div class="circle-card" onclick="openTool('guru')"><span class="badge">NEW</span><div class="circle">📊</div><p>AI Guru</p></div>
+  <div class="circle-card" onclick="openTool('image')"><div class="circle">🖌️</div><p>AI Image</p></div>
+  <div class="circle-card" onclick="openTool('voice')"><div class="circle">🎙️</div><p>AI Voice</p></div>
+  <div class="circle-card" onclick="openTool('video')"><div class="circle">📷</div><p>AI Video</p></div>
+</div>
 
-<section class="page" id="page-scriptvideo"><h1 class="page-title">📝 Script to Video</h1><div class="panel"><div class="field"><label>Paste your script</label><textarea id="scriptInput"></textarea></div><div class="actions"><button class="btn" id="makeScenes">Create Scene Prompts</button></div><div id="scriptResult" class="result hidden"></div></div></section>
-
-<section class="page" id="page-image"><h1 class="page-title">🎨 AI Image Generator</h1><div class="panel"><div class="field"><label>Describe your image</label><textarea id="imagePrompt"></textarea></div><div class="actions"><button class="btn" id="makeImagePrompt">Prepare Image Prompt</button></div><div id="imageResult" class="result hidden"></div></div></section>
-
-<section class="page" id="page-voice"><h1 class="page-title">🎙️ AI Voice Generator</h1><div class="panel"><div class="field"><label>Text to speak</label><textarea id="voiceText"></textarea></div><div class="actions"><button class="btn" id="speakBtn">▶ Play Voice</button><button class="btn secondary" id="stopVoice">■ Stop</button></div><p class="hint" id="voiceStatus"></p></div></section>
-
-<section class="page" id="page-story"><h1 class="page-title">📖 AI Story Maker</h1><div class="panel"><div class="field"><label>Story topic</label><input id="storyTopic" placeholder="Gareeb maa aur beta ki kahani"></div><div class="field"><label>Character details</label><textarea id="storyCharacters"></textarea></div><div class="actions"><button class="btn" id="makeStory">Create Story Outline</button></div><div id="storyResult" class="result hidden"></div></div></section>
-
-<section class="page" id="page-youtube"><h1 class="page-title">▶️ YouTube Creator Tools</h1><div class="panel"><div class="field"><label>Video topic</label><input id="ytTopic"></div><div class="actions"><button class="btn" id="makeYoutube">Generate Creator Pack</button></div><div id="youtubeResult" class="result hidden"></div></div></section>
-
-<section class="page" id="page-editor"><h1 class="page-title">✂️ Video Editing Tools</h1><div class="panel"><div class="field"><label>Choose video file</label><input id="editVideo" type="file" accept="video/*"></div><div class="preview" id="editPreview">🎞️<br>Your video preview will appear here.</div><div class="actions"><button class="btn secondary" id="clearEdit">Clear Preview</button></div></div></section>
-
-<section class="page" id="page-library"><h1 class="page-title">📁 My Videos</h1><div id="libraryList"></div></section>
-
-<section class="page" id="page-settings"><h1 class="page-title">⚙️ Settings</h1><div class="notice success">Backend: https://vidox-ai-backend.arjunbheel638.workers.dev — Connected ✓</div><div class="panel"><div class="field"><label>Backend base URL</label><input id="apiUrl" type="url"></div><div class="actions"><button class="btn" id="saveSettings">Save Backend URL</button><button class="btn secondary" id="testBackend">Test Connection</button></div><div id="apiStatus" class="result hidden"></div></div></section>
-
-<div class="footer">VIDOX AI · LIVE MODE ACTIVE — No Demo</div>
-</main></div>
-<div class="toast hidden" id="toast"></div>
+<div class="bottom-nav">
+  <div class="nav-item active">🏠<br>Home</div>
+  <div class="nav-item">📖<br>Story Gen</div>
+  <div class="nav-item">🤖<br>AI Guru</div>
+  <div class="nav-item">🔍<br>Video SEO</div>
+  <div class="nav-item">🎓<br>Tutorials</div>
+</div>
 <script>
-"use strict";
-const $=id=>document.getElementById(id);
-const SETTINGS_KEY="vidox_ai_settings_v1";
-function toast(m){const el=$("toast");el.textContent=m;el.classList.remove("hidden");clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.add("hidden"),3000)}
-function showResult(id,t){const el=$(id);if(!el)return;el.textContent=t;el.classList.remove("hidden")}
-function getSettings(){try{return JSON.parse(localStorage.getItem(SETTINGS_KEY)||"{}")}catch(e){return{}}}
-function backend(){return (getSettings().url||"").replace(/\/+$/,"")}
-function go(page){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));const t=$("page-"+page);if(t)t.classList.add("active");document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===page));$("sidebar").classList.remove("open");window.scrollTo({top:0,behavior:"smooth"})}
-document.getElementById("nav").addEventListener("click",e=>{const b=e.target.closest("button[data-page]");if(b){e.preventDefault();go(b.dataset.page)}});
-document.addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(b){e.preventDefault();go(b.dataset.go)}});
-$("menuBtn").addEventListener("click",()=>{$("sidebar").classList.toggle("open")});
-async function postJSON(path,payload,resultId){const base=backend();if(!base){showResult(resultId,"No backend URL");return null}try{showResult(resultId,"Sending request…");const res=await fetch(base+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});const data=await res.json();if(!res.ok)throw new Error(data.error||"HTTP "+res.status);showResult(resultId,JSON.stringify(data,null,2));return data}catch(err){showResult(resultId,"Failed: "+err.message);return null}}
-$("generateVideo").onclick=async()=>{const prompt=$("videoPrompt").value.trim();if(!prompt)return toast("Pehle prompt likhein.");const payload={prompt,duration:$("videoDuration").value,aspectRatio:$("videoRatio").value};const base=backend();const d=await postJSON("/api/video",payload,"videoResult");if(!d)return;const projectId=d.projectId||d.id;let url=d.videoUrl||d.url;if(!projectId&&url){$("videoPreview").innerHTML=`<video controls autoplay style="width:100%"><source src="${url}"></video>`;return}if(!projectId)return; $("videoPreview").innerHTML=`<div style="color:white;padding:20px;text-align:center">⏳ Video ban rahi hai...<br><br><b>ID:</b> ${projectId}<br><br>1-3 min<br><small>Auto check ho raha hai...</small></div>`;$("videoHint").textContent="Project: "+projectId+" — Checking every 10s...";toast("Started! "+projectId);let attempts=0;const poll=setInterval(async()=>{attempts++;try{const r=await fetch(base+"/api/video/"+projectId);const s=await r.json();const movie=s.movie||s.data||s;const vurl=movie.url||movie.videoUrl||s.url||s.videoUrl;const status=movie.status||s.status;if(vurl||status==="done"){clearInterval(poll);if(vurl){$("videoPreview").innerHTML=`<video controls autoplay style="width:100%;border-radius:12px"><source src="${vurl}" type="video/mp4"></video><br><br><a href="${vurl}" target="_blank" style="display:inline-block;padding:10px 15px;background:linear-gradient(100deg,#9b24ed,#176fe8);color:white;border-radius:10px;text-decoration:none">⬇️ Download Video</a>`;$("videoHint").textContent="✅ Video ready!";toast("✅ Video ready!");}}else if(attempts>60){clearInterval(poll);$("videoHint").textContent="Timeout";}else{$("videoHint").textContent=`Status: ${status||"processing"} — ${attempts}/60`;}}catch(e){$("videoHint").textContent="Poll error: "+e.message;}},10000);};
-$("makeScenes").onclick=()=>{const s=$("scriptInput").value.trim();if(!s)return toast("Script paste karein.");showResult("scriptResult",s)};
-$("makeImagePrompt").onclick=()=>{const p=$("imagePrompt").value.trim();if(!p)return toast("Description likhein.");showResult("imageResult",p)};
-$("speakBtn").onclick=()=>{const t=$("voiceText").value.trim();if(!t)return toast("Text likhein.");speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);speechSynthesis.speak(u)};
-$("stopVoice").onclick=()=>{speechSynthesis.cancel()};
-$("makeStory").onclick=()=>{const topic=$("storyTopic").value.trim();if(!topic)return toast("Topic likhein.");showResult("storyResult","TITLE: "+topic)};
-$("makeYoutube").onclick=()=>{const topic=$("ytTopic").value.trim();if(!topic)return toast("Topic likhein.");showResult("youtubeResult","TITLE: "+topic)};
-$("editVideo").onchange=e=>{const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f);$("editPreview").innerHTML="";const v=document.createElement("video");v.src=url;v.controls=true;$("editPreview").append(v)};
-$("clearEdit").onclick=()=>{$("editPreview").textContent="🎞️ Your video preview will appear here."};
-$("saveSettings").onclick=()=>{const url=$("apiUrl").value.trim();localStorage.setItem(SETTINGS_KEY,JSON.stringify({url}));toast("Saved")};
-$("testBackend").onclick=async()=>{const base=backend();try{showResult("apiStatus","Testing…");const r=await fetch(base+"/api/status");const d=await r.text();showResult("apiStatus","Connected: "+d)}catch(e){showResult("apiStatus","Failed: "+e.message)}};
-const cfg=getSettings();if(cfg.url){$("apiUrl").value=cfg.url}else{$("apiUrl").value="https://vidox-ai-backend.arjunbheel638.workers.dev";localStorage.setItem(SETTINGS_KEY,JSON.stringify({url:"https://vidox-ai-backend.arjunbheel638.workers.dev"}));}
+function openTool(name){
+  // abhi sab tools tumhare video generator pe le jayenge
+  // baad me har ek ka alag AI laga denge
+  window.location.href = "generator.html?type="+name;
+}
 </script>
 </body>
-</html>
