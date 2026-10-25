@@ -1,30 +1,14 @@
 export default {
-  async fetch(request, env) {
-    const cors = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization"
-    };
-    if (request.method === "OPTIONS") return new Response(null, { headers: cors });
-    const url = new URL(request.url);
-    if (url.pathname === "/api/status") {
-      return Response.json({ status: "VIDOX AI LIVE - OK" }, { headers: cors });
-    }
-    if (url.pathname === "/api/video" && request.method === "POST") {
-      try {
-        const input = await request.json();
-        const result = await fetch("https://api.json2video.com/v2/movies", {
-          method: "POST",
-          headers: { "x-api-key": env.JSON2VIDEO_API_KEY, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            resolution: "hd", quality: "high", draft: false,
-            scenes: [{ elements: [{ type: "text", text: input.prompt || "A cinematic video", style: "001" }] }]
-          })
-        });
-        const data = await result.json();
-        return Response.json({ success: true, projectId: data.project || data.id, data }, { headers: cors });
-      } catch (e) { return Response.json({ error: e.message }, { status: 500, headers: cors }); }
-    }
-    return Response.json({ ok: true }, { headers: cors });
+  async fetch() {
+    return new Response(`<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>8 Tools Hub</title><style>*{box-sizing:border-box}body{font-family:system-ui;background:#0f172a;color:#fff;margin:0;padding:16px}h1{text-align:center;color:#38bdf8}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;max-width:1100px;margin:auto}.card{background:#1e293b;padding:14px;border-radius:14px}input,textarea,button,select{width:100%;padding:9px;margin:5px 0;border-radius:7px;border:0}button{background:#38bdf8;font-weight:700}</style></head><body><h1>ðŸš€ 8 Tools Hub - By Arjun</h1><div class="grid"><div class="card"><h3>1. YT Thumbnail</h3><input id="yt" placeholder="YouTube URL"><button onclick="ytThumb()">Get</button><div id="ytOut"></div></div><div class="card"><h3>2. Image Compressor</h3><input type="file" id="imgIn" accept="image/*"><button onclick="compressImg()">Compress</button></div><div class="card"><h3>3. QR Generator</h3><input id="qrText" placeholder="Text"><button onclick="genQR()">Generate</button><div id="qrOut"></div></div><div class="card"><h3>4. Password</h3><button onclick="genPass()">Generate</button><input id="pOut" readonly></div><div class="card"><h3>5. Word Counter</h3><textarea id="wText" rows="3"></textarea><button onclick="countW()">Count</button><div id="wOut"></div></div><div class="card"><h3>6. Age Calc</h3><input type="date" id="dob"><button onclick="calcAge()">Calc</button><div id="ageOut"></div></div><div class="card"><h3>7. Tag Info</h3><input id="tagUrl" placeholder="YT URL"><button onclick="getTags()">Info</button><div id="tagOut"></div></div><div class="card"><h3>8. Text to Speech</h3><textarea id="tts" rows="2"></textarea><button onclick="speak()">Speak</button><button onclick="speechSynthesis.cancel()" style="background:#fb7185">Stop</button></div></div><script>
+function ytThumb(){let u=yt.value;let m=u.match(/(?:v=|\/embed\/|\.be\/)([\w-]{11})/);let id=m?m[1]:'';if(!id){ytOut.innerHTML='Invalid';return}let b='https://img.youtube.com/vi/'+id+'/';ytOut.innerHTML='<img src="'+b+'mqdefault.jpg" style="width:100%"><br><a href="'+b+'maxresdefault.jpg" target="_blank" style="color:#38bdf8">HD Open</a>'}
+function compressImg(){let f=imgIn.files[0];let i=new Image();i.onload=()=>{let c=document.createElement('canvas');c.width=i.width*0.7;c.height=i.height*0.7;c.getContext('2d').drawImage(i,0,0,c.width,c.height);let a=document.createElement('a');a.download='compressed.jpg';a.href=c.toDataURL('image/jpeg',0.6);a.click()};i.src=URL.createObjectURL(f)}
+function genQR(){let t=qrText.value;qrOut.innerHTML=t?'<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(t)+'">':''}
+function genPass(){let ch='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz0123456789@#$';let p='';for(let k=0;k<16;k++)p+=ch[Math.floor(Math.random()*ch.length)];pOut.value=p}
+function countW(){let t=wText.value.trim();wOut.innerText='Words: '+(t?t.split(/\s+/).length:0)+' | Chars: '+t.length}
+function calcAge(){let d=new Date(dob.value);if(isNaN(d))return;let a=new Date(Date.now()-d).getUTCFullYear()-1970;ageOut.innerText='Age: '+a}
+function getTags(){tagOut.innerText='Title fetch needs API: '+tagUrl.value}
+function speak(){let u=new SpeechSynthesisUtterance(tts.value);speechSynthesis.speak(u)}
+</script></body></html>`, {headers:{'content-type':'text/html'}});
   }
-};
