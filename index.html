@@ -201,8 +201,8 @@ $("exportLibrary").onclick=()=>{if(!savedItems.length)return toast("Library empt
 $("clearLibrary").onclick=()=>{if(!confirm("Delete all saved items from this browser?"))return;savedItems=[];persist();renderLibrary();toast("Library cleared")};
 $("saveGeminiKey").onclick=()=>{const k=$("geminiKey").value.trim();if(!k)return toast("Pehle Key paste karein.");localStorage.setItem("vidox_gemini_key",k);toast("Key Saved! Ab Test dabao");};
 $("testGemini").onclick=async()=>{const k=localStorage.getItem("vidox_gemini_key")||$("geminiKey").value.trim();if(!k){showResult("apiStatus","Pehle Key save karein.");return}try{showResult("apiStatus","Testing...");const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="+k,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:"Hi"}]}]})});const d=await r.text();if(!r.ok)throw new Error("Key ghalat hai: "+d.slice(0,100));showResult("apiStatus","Connected! ✅ Ab Text to Video chalega.");}catch(e){showResult("apiStatus","Failed: "+e.message)}};
-  
-  const cfg=getSettings();if(cfg.url)$("apiUrl").value=cfg.url;renderLibrary();
+
+  const cfg=getSettings(); if(cfg.url && $("apiUrl")) $("apiUrl").value=cfg.url; renderLibrary();
   // VIDOX AI expanded tool library. Existing tools and saved items remain intact.
 const VIDOX_TOOLS = [
  {name:"Text to Video",slug:"text-to-video",icon:"🎬",desc:"Turn a written idea into a video."},
